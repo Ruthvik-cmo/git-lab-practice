@@ -274,3 +274,33 @@ minikube service library-app
 
 
 
+
+services:
+  web:
+    image: YOUR_DOCKERHUB_USERNAME/YOUR_WEB_IMAGE:latest
+    container_name: web-app
+    ports:
+      - "8081:8080"
+    networks:
+      - monitoring
+
+  nagios:
+    image: jasonrivers/nagios:latest
+    container_name: nagios
+    ports:
+      - "8080:80"
+    environment:
+      - NAGIOSADMIN_USER=nagiosadmin
+      - NAGIOSADMIN_PASS=nagios
+    networks:
+      - monitoring
+    depends_on:
+      - web
+
+networks:
+  monitoring:
+    driver: bridge
+
+
+
+
